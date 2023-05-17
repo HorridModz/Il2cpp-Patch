@@ -1,7 +1,8 @@
 def config():
     """
-    Change these values to make it work!
+    Change these values to generate your script!
     """
+
     """
     Path to the dumpcs file
     Make sure not to remove the r before the opening quotation mark!
@@ -12,8 +13,43 @@ def config():
     Make sure not to remove the r before the opening quotation mark!
     """
     libpath = r"C:\Users\zachy\OneDrive\Documents\Work\Projects\Pixel Gun 3D\Pixel Gun 3D 22.6.0\libil2cpp.so"
-    # Patching time!
     """
+    Path to the output script file
+    Make sure not to remove the r before the opening quotation mark!
+    """
+    outputpath = r"C:\Users\zachy\OneDrive\Documents\Work\Projects\Pixel Gun 3D\Pixel Gun 3D 22.6.0\il2cpppatchoutput.lua"
+
+    """
+    Settings for generated script
+    
+    scripttitle: Title of the script.
+    scriptauthor: Your name. To make it anonymous, set to None.
+    scriptdescription: Description of what the script does. To not have a description, set to None.
+    """
+    scripttitle = "Il2cpp Patch Output"
+    scriptdescription = None
+    scriptauthor = "User123456789#6424"
+
+    """
+    Game info
+    
+    gamename: Name of the game the script is for.
+    gameversion: Game version the script is for.
+    require632it: If True, requires 32bit. If require32bit and require64bit are both False, works for
+    both 32bit and and 64bit. False is recommended.
+    require64bit: If True, requires 64bit. If require32bit and require64bit are both False, works for
+    both 32bit and and 64bit. False is recommended.
+    """
+    gamename = "Pixel Gun 3D"
+    gameversion = "22.6.0"
+    require32bit = False
+    require64bit = False
+
+    """ Patching time! """
+
+    """
+    Patching functions
+    
     Patchall: Function to patch all methods / fields in a class.
     
     Arguments:
@@ -30,9 +66,7 @@ def config():
         Examples: int, static void, public Dictionary<string, SaltedInt> 
     patchto: The value to patch to.
     patchtype: The type of data the patch is.
-    """
-
-    """
+    
     Patchmethod: Function to patch one method.
 
     Arguments:
@@ -43,9 +77,7 @@ def config():
     methodname: Name of the method to patch.
     patchto: The value to patch to.
     patchtype: The type of data the patch is.
-    """
 
-    """
     Patchfield: Function to patch one field.
 
     Arguments:
@@ -56,17 +88,50 @@ def config():
     fieldname: Name of the field to patch.
     patchto: The value to patch to.
     patchtype: The type of data the patch is.
+    
+    Callmethod: Function to call one method
+    Callall: Function to call all methods in a class.
+    
+    Arguments:
+    
+    If an argument is not provided, the program will attempt to infer it. However, this is not recommended
+    as it may be wrong.
+    classname: Name of the class to call the methods from.
+    namecontains: Only call methods that contain this substring in their name.
+        This is not case sensitive. To disable, set to None.
+    datatype: Only call methods that are of this data type. Can include modifiers, such
+        as static. This is not case sensitive.
+        Examples: int, static void, public Dictionary<string, SaltedInt> 
+    params: Dictionary of parameters to call the method with, in this format: "data type": value
+            If the value is null, the data type should be None (without quotes) or "null"
+            Only supports primitive types. Does not support nullable types, either.
+            Examples: "int": 1, "string": "hello", None: "null", "null": "null"
+ 
+    Patchmethod: Function to call one method.
+
+    Arguments:
+
+    If an argument is not provided, the program will attempt to infer it. However, this is not recommended
+    as it may be wrong.
+    classname: Name of the class the method is in.
+    methodname: Name of the method to call.
+    params: Dictionary of parameters to call the method with, in this format: "data type": value
+            If the value is null, the data type should be None (without quotes) or "null"
+            Only supports primitive types. Does not support nullable types, either.
+            Examples: "int": 1, "string": "hello", None: "null", "null": "null"
     """
+
 
     """
     Patchtype:
+    
     The type of data a patch is.
     If the patch is invalid for a field or method, the program will try to convert the patch value
     to another representation that means the same thing. If it fails to do so, it will throw an error and
     skip the method / field.
     . Hex / HexInstruction(s): Arm instructions in hexadecimal representation. If used on a field, it
         will fail.
-    . Arm / ArmInstructions: Arm assembly code for 32bit (arm) or 64bit (arm64).
+    . Arm / ArmInstruction(s): Arm assembly code for 32bit (arm) or 64bit (arm64).
         Separate instructions with newlines or semicolons. If used on a field, it will fail.
     . Nop: Use on void methods to make them do nothing. An example usage is implementing antiban
         by nopping a Ban method. When this type of patch is used, the patchto value does not matter.
@@ -91,13 +156,14 @@ def config():
         is not in the UTF-16 charset, it will fail.
     """
     patchall(classname="WeaponSounds", namecontains="Ban", patchmethods=True, patchfields=True, datatype="void",
-    patchto=1, patchtype=PatchType.NOP)
+             patchto=1, patchtype=PatchType.NOP)
 
 
 """
 Everything below here is the real code - you don't need to look at this!
 It's all in one file, so the code is very cluttered and messy.
 """
+
 
 def patchall():
     """
@@ -107,7 +173,7 @@ def patchall():
     Namecontains inference: Defaults to None
     Patchmethods inference: Last patchmethods that was passed in (defaults to true if first call)
     Patchfields inference: Last patchfields that was passed in (defaults to true if first call)
-    Datatype inference: Last datatype that was passed in (fails if first call)
+    Datatype inference: Last datatype that was passed in (defaults to None if first call)
     Patchto inference: Fails
     Patchtype inference: Tries to choose a type that is compatible with the patchto value. Fails
     if the patchto value is also not specified, or if there is no compatible type
@@ -121,7 +187,7 @@ def patchmethod():
     Classname inference: Last classname that was passed in (fails if first call)
     Patchmethods inference: Last patchmethods that was passed in (defaults to true if first call)
     Patchfields inference: Last patchfields that was passed in (defaults to true if first call)
-    Datatype inference: Last datatype that was passed in (fails if first call)
+    Datatype inference: Last datatype that was passed in (defaults to None if first call)
     Patchto inference: Fails
     Patchtype inference: Tries to choose a type that is compatible with the patchto value. Fails
     if the patchto value is also not specified, or if there is no compatible type
@@ -135,26 +201,40 @@ def patchfield():
     Classname inference: Last classname that was passed in (fails if first call)
     Patchmethods inference: Last patchmethods that was passed in (defaults to true if first call)
     Patchfields inference: Last patchfields that was passed in (defaults to true if first call)
-    Datatype inference: Last datatype that was passed in (fails if first call)
+    Datatype inference: Last datatype that was passed in (defaults to None if first call)
     Patchto inference: Fails
     Patchtype inference: Tries to choose a type that is compatible with the patchto value. Fails
     if the patchto value is also not specified, or if there is no compatible type
     """
 
 
+def callall():
+    """
+    Calls all methods in an entire class.
+
+    Classname inference: Last classname that was passed in (fails if first call)
+    Namecontains inference: Defaults to None
+    Datatype inference: Last datatype that was passed in (defaults to None if first call)
+    Patchto inference: Fails
+    Patchtype inference: Tries to choose a type that is compatible with the patchto value. Fails
+    if the patchto value is also not specified, or if there is no compatible type
+    """
+
 """
 Requiring python 3.10 or later
 """
 import sys
+
 # From https://stackoverflow.com/a/34911547/20558255
 if sys.version_info < (3, 10):
-    raise RuntimeError("Python 3.10 or later is required. You currently have python %s.%s installed."
+    # noinspection PyStringFormat
+    raise RuntimeError("Python 3.10 or later is required. You currently have Python %s.%s installed."
                        % sys.version_info[:2])
-
 
 """
 Installing and importing modules
 """
+from typing import Any, Optional, Union, TypeVar, overload
 import os
 import importlib
 import pkg_resources
@@ -162,7 +242,9 @@ import packaging.version
 import subprocess
 import re
 import json
+from weakref import finalize
 from enum import Enum
+from abc import ABC, abstractmethod
 
 
 def install_module(requirement):
@@ -174,7 +256,7 @@ def install_module(requirement):
         print(f"Installing {requirementname} module...")
         try:
             subprocess.check_call([sys.executable, "-m", "pip", "install", requirement, "--disable-pip-version-check"],
-                               stdout=subprocess.DEVNULL)
+                                  stdout=subprocess.DEVNULL)
         except subprocess.CalledProcessError:
             raise ImportError(f"Failed to install {requirementname} module") from None
 
@@ -192,6 +274,8 @@ import colorama
 """
 Logging
 """
+
+
 class LoggingLevel(Enum):
     Debug = 1
     Info = 2
@@ -309,22 +393,26 @@ class Logging:
             else:
                 print(f"[{level.name}]: {message}")
 
-    # noinspection PyPep8Naming
-    def warning(self, message: str, Type=None):
-        if Type:
-            self.Log.append(f"[Warning]: {Type}: {message}")
-            if self.printwarnings:
-                self.printmessage(f"{Type}: {message}", LoggingLevel.Warning, False, self.colorized)
+    def warning(self, message: str, warningtype: BaseException = None):
+        if warningtype:
+            self.Log.append(f"[Warning]: {warningtype}: {message}")
+            if self.printwarnings and _enabled and self.enabled:
+                self.printmessage(f"{warningtype}: {message}", LoggingLevel.Warning, False, self.colorized)
         else:
             self.Log.append(f"[Warning]: {message}")
-            if self.printwarnings:
+            if self.printwarnings and _enabled and self.enabled:
                 self.printmessage(message, LoggingLevel.Warning, False, self.colorized)
+
 
 colorama.just_fix_windows_console()
 logging = Logging(usedefaults=True)
 
+"""
+Arm Hex Conversion
+"""
 
-class ArmHex():
+
+class ArmHex:
     def __init__(self, arm64=False):
         self.arm64 = arm64
         self.architecture = "arm64" if arm64 else "arm"
@@ -345,10 +433,10 @@ class ArmHex():
             """
             return bytes(self.ks.asm(armcode)[0]).hex().upper()
         except KsError as e:
-            # ToDo: Error handling
+            # To-Do: Error handling
             raise
 
-    def hextoarm(self, hexcode, offset=0x0, delimiter = "\n"):
+    def hextoarm(self, hexcode, offset=0x0, delimiter: str = "\n"):
         if delimiter is None:
             delimiter = ""
         try:
@@ -362,11 +450,23 @@ class ArmHex():
             return delimiter.join([f"{instruction.mnemonic} {instruction.op_str}"
                                    for instruction in self.cs.disasm(bytes.fromhex(hexcode), offset)])
         except CsError as e:
-            # ToDo: Error handling
+            # To-Do: Error handling
             raise
 
-armhex = ArmHex(True)
-print(armhex.hextoarm(armhex.armtohex("mov w0, #1; ret")))
+"""
+Dumpcs Parsing
+"""
+def getactualdatatype(datatype: str) -> str:
+    ...
+
+
+def getmodifiers(datatype: str) -> list[str]:
+    ...
+
+"""
+Patches
+"""
+
 
 class PatchType(Enum):
     """
@@ -404,6 +504,7 @@ class PatchType(Enum):
     HexInstruction = 1,
     HexInstructions = 1,
     Arm = 2,
+    ArmInstruction = 2,
     ArmInstructions = 2,
     Nop = 3,
     Int = 4,
@@ -411,7 +512,202 @@ class PatchType(Enum):
     Bool = 5,
     Boolean = 5,
     Float = 6,
-    Double = 6
-    String = 7,
-    Char = 8,
-    Character = 8
+    Double = 7,
+    String = 8,
+    Char = 9,
+    Character = 10,
+
+
+PatchImplementation = TypeVar('PatchImplementation', bound='Patch')
+
+
+# noinspection PyUnusedLocal
+class Patch(ABC):
+    # Sentinel value for empty patch data
+    EmptyPatchData = "_EMPTYPATCHDATA_"
+
+    @overload
+    def __init__(self, patchdata: Any) -> None:
+        """
+        Creates a new Patch from the patch data
+        """
+        pass
+
+    @overload
+    def __init__(self, patch: 'Patch') -> None:
+        """
+        Creates a Patch from an existing Patch of another Patch type
+        """
+        pass
+
+    # In the type hints, we use union [Patch, None] rather than Optional[Patch] here because it makes it
+    # explicit that None represents no value. This is necessary because for patchdata, EmptyPatchData
+    # represents no value, not None.
+    def __init__(self, patchdata: Union[Any, type('Patch.EmptyPatchData')] = EmptyPatchData,
+                 patch: Union['Patch', None] = None) -> None:
+        """
+        Attempts to create a Patch of this type from the patch data or an existing Patch
+        May do implicit conversions of the patch data
+
+        Returns NotImplemented if the Patch is invalid and cannot be created
+        If the Patch is invalid and cannot be created, stores the reason why it is invalid in the
+            invalidpatchreason property
+
+        Implementations of Patch should not override this method. Instead, they should override
+        _frompatchdata, _frompatch, and _setupresources.
+
+        :raises TypeError: Both patchdata and patch were provided - they are mutually exclusive
+        :raises TypeError: Neither patchdata nor patch was provided - they are jointly exhaustive
+        """
+        if patchdata != self.EmptyPatchData and patch is not None:
+            raise TypeError("patchdata and patch are mutually exclusive")
+        if patchdata != self.EmptyPatchData:
+            self._frompatchdata(patchdata)
+        elif patch is not None:
+            self._frompatch(patch)
+        else:
+            raise TypeError("Expected patchdata or patch to create Patch from, got neither")
+        # In case an exception occurs during _setupresources, we want to ensure that we have
+        # _cleanupresources as the finalizer. So, we set the finalizer before calling _setupresources.
+        finalize(self, self._cleanupresources)
+        self._setupresources()
+
+    @abstractmethod
+    def _frompatchdata(self, patchdata: Any) -> None:
+        """
+        Only for being used internally by __init__
+
+        Attempts to create a new Patch from the patch data
+
+        Returns NotImplemented if the Patch is invalid and cannot be created
+        If the Patch is invalid and cannot be created, stores the reason why it is invalid in the
+            invalidpatchreason property
+
+        :param patchdata: The patch data
+        :return: None if the Patch was created successfully
+                 NotImplemented if the Patch is invalid and could not be created
+        """
+        raise NotImplementedError
+
+    @abstractmethod
+    def _frompatch(self, patch: PatchImplementation) -> None:
+        """
+        Only for being used internally by __init__
+
+        Attempts to create a Patch of this type from a Patch of another Patch type
+
+        Returns NotImplemented if the Patch is invalid and cannot be created
+        If the Patch is invalid and cannot be created, stores the reason why it is invalid in the
+            invalidpatchreason property
+
+        :param patch: The original Patch of another Patch type
+        :return: None if the Patch was created successfully
+                 NotImplemented if the Patch is invalid and could not be created
+        """
+        raise NotImplementedError
+
+    def checkvalidpatch(self) -> bool:
+        """
+        Checks if the patch is valid.
+        A patch is valid if the patch data is compatible with the patch
+        This is after any implicit conversions when the class is instantiated
+        If the patch is not valid, stores the reason in the invalidpatchreason property.
+
+        :return: Whether the patch is valid
+        """
+        raise NotImplementedError
+
+    @property
+    def invalidpatchreason(self) -> Optional[str]:
+        """
+        If the patch is not valid, this is the reason why.
+        If the patch is valid, this will be None.
+
+        :return: If the patch is valid: None
+                 If the patch is invalid: The reason why the patch is invalid (str)
+        """
+        return self._invalidpatchreason
+
+    def _setupresources(self) -> None:
+        """
+        Sets up any resources needed for the patch, such as loading a file
+
+        Does not have to be implemented
+        """
+        pass
+
+    def _cleanupresources(self) -> None:
+        """
+        Upon destruction, cleans up resources that the Patch loaded, created, or initialized
+
+        Does not have to be implemented
+        """
+        pass
+
+    def patchmethod(self, name: str, datatype: str, offset: str) -> str:
+        """
+        This method does the actual work of generating the patch code
+        Patches a method
+
+        The patch code does not have to be a standalone script, but it does have to guarantee
+        that it will not cause conflicts or issues with code from other patches
+
+        :param name: The name of the method to patch
+        :param datatype: The data type of the method to patch, including any modifiers
+        :param offset: The offset of the method to patch
+        :return: The generated code that patches the method
+
+        Does not have to be implemented
+        """
+
+    def patchfield(self, name: str, datatype: str, offset: Optional[str]) -> str:
+        """
+        This method does the actual work of generating the patch code
+        Patches a field
+
+        The patch code does not have to be a standalone script, but it does have to guarantee
+        that it will not cause conflicts or issues with code from other patches
+
+        :param name: The name of the field to patch
+        :param datatype: The data type of the field to patch, including any modifiers
+        :param offset: The offset of the field to patch. None if no offset.
+        :return: The generated code that patches the field
+
+        Does not have to be implemented
+        """
+
+
+class HexPatch(Patch):
+    ...
+
+
+class ArmPatch(Patch):
+    ...
+
+
+class NopPatch(Patch):
+    ...
+
+
+class IntPatch(Patch):
+    ...
+
+
+class BoolPatch(Patch):
+    ...
+
+
+class FloatPatch(Patch):
+    ...
+
+
+class DoublePatch(Patch):
+    ...
+
+
+class StringPatch(Patch):
+    ...
+
+
+class CharPatch(Patch):
+    ...
