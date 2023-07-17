@@ -21,4 +21,10 @@ This is a tool I made for a friend. It's a python script to automatically genera
 - All-update script generation
 - Helpful error messages and detailed, configurable logging
 
+# Setup
+
 # Usage
+
+# Examples
+
+# Class Reference
