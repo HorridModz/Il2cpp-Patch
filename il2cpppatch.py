@@ -168,7 +168,8 @@ This script will give you 10000 gems. Enjoy! As they say, "A happy man is a weal
     classname: Name of the class to patch.
     namecontains: Only patch methods that contain this substring in their name.
         This is not case sensitive. To disable, set to None.
-    datatype: Only patch methods that are of this data type. Only supports primitive and non-nullable data types. 
+    datatype: Only patch methods that are of this data type. Only supports primitive data types.
+              Nullable types are automatically included along with the basic, non-nullable type.
               Defaults to any (though it will fail on methods with data types incompatible with your patchtype).
     modifiers: Only patch methods that contain these modifiers (list).
                Examples: ["public", "static"], "overload"
@@ -183,7 +184,8 @@ This script will give you 10000 gems. Enjoy! As they say, "A happy man is a weal
     classname: Name of the class to patch.
     namecontains: Only patch fields that contain this substring in their name.
         This is not case sensitive. To disable, set to None.
-    datatype: Only patch fields that are of this data type. Only supports primitive and non-nullable data types.
+    datatype: Only patch fields that are of this data type. Only supports primitive data types.
+              Nullable types are automatically included along with the basic, non-nullable type.
               This is not case sensitive.
               Defaults to any (though it will fail on fields with data types incompatible with your patchtype).
     modifiers: Only patch fields that contain these modifiers (list).
@@ -211,7 +213,8 @@ This script will give you 10000 gems. Enjoy! As they say, "A happy man is a weal
     classname: Name of the class to patch.
     namecontains: Only freeze fields that contain this substring in their name.
         This is not case sensitive. To disable, set to None.
-    datatype: Only freeze fields that are of this data type. Only supports primitive and non-nullable data types.
+    datatype: Only freeze fields that are of this data type. Only supports primitive data types.
+              Nullable types are automatically included along with the basic, non-nullable type.
               This is not case sensitive.
               Defaults to any (though it will fail on methods with data types incompatible with your patchtype).
     modifiers: Only freeze fields that contain these modifiers (list).
@@ -230,7 +233,8 @@ This script will give you 10000 gems. Enjoy! As they say, "A happy man is a weal
     classname: Name of the class to patch.
     namecontains: Only unfreeze fields that contain this substring in their name.
         This is not case sensitive. To disable, set to None.
-    datatype: Only unfreeze fields that are of this data type. Only supports primitive and non-nullable data types.
+    datatype: Only unfreeze fields that are of this data type. Only supports primitive data types.
+              Nullable types are automatically included along with the basic, non-nullable type.
               This is not case sensitive.
               Defaults to any (though it will fail on methods with data types incompatible with your patchtype).
     modifiers: Only unfreeze fields that contain these modifiers (list).
@@ -260,8 +264,10 @@ This script will give you 10000 gems. Enjoy! As they say, "A happy man is a weal
     classname: Name of the class the method is in.
     methodname: Name of the method to call.
     params: List of parameters to call the method with, in this format: datatype value
-            Only supports primitive types. Does not support nullable types, either.
-            Examples: "int": 1, "string": "hello", None: "null", "null": "null"
+            Only supports primitive types (as well as their nullable variants).
+            If the data type is nullable, just put the basic, non-nullable type.
+            To use the value null (for nullable data types), put None (without quotes).
+            Examples: "int": 1, "string": "hello", "char": None
             If there are no parameters, pass an empty list or None.
             Params much match method's signature (it will also work if convertparams is true
             and the params can be converted to match the signature).
@@ -283,12 +289,13 @@ This script will give you 10000 gems. Enjoy! As they say, "A happy man is a weal
     methodname: Name of the method to call.
     methodtocall: Method to redirect this method to.
     params: Dictionary of parameters to call the method it is redirected to with, in this format: "data type": value
+            Only supports primitive types (as well as their nullable variants).
+            If the data type is nullable, just put the basic, non-nullable type.
             If you want it to use one of the original method's parameters:
                 Set the value to MethodParam (NUMBEROFPARAMETER). For example: "int": MethodParam(1).
             Of course, you can also use your own parameters:
-                If the value is null, the data type should be None (without quotes) or "null"
-                Only supports primitive types. Does not support nullable types, either.
-                Examples: "int": 1, "string": "hello", None: "null", "null": "null"
+                To use the value null (for nullable data types), put None (without quotes).
+                Examples: "int": 1, "string": "hello", "char": None
     
     callandredirectmethod: Same as redirectmethod, but calls the original method as well. Function to redirect 
     a method to call another method.
@@ -299,12 +306,13 @@ This script will give you 10000 gems. Enjoy! As they say, "A happy man is a weal
     methodname: Name of the method to call.
     methodtocall: Method to redirect this method to.
     params: Dictionary of parameters to call the method it is redirected to with, in this format: "data type": value
+            Only supports primitive types (as well as their nullable variants).
+            If the data type is nullable, just put the basic, non-nullable type.
             If you want it to use one of the original method's parameters:
                 Set the value to MethodParam (NUMBEROFPARAMETER). For example: "int": MethodParam(1).
             Of course, you can also use your own parameters:
-                If the value is null, the data type should be None (without quotes) or "null"
-                Only supports primitive types. Does not support nullable types, either.
-                Examples: "int": 1, "string": "hello", None: "null", "null": "null"
+                To use the value null (for nullable data types), put None (without quotes).
+                Examples: "int": 1, "string": "hello", "char": None
     callafter: Whether to call the original method before or after the redirected one (False is before, True is after).
                This default to False (before).
     
@@ -315,15 +323,17 @@ This script will give you 10000 gems. Enjoy! As they say, "A happy man is a weal
     classname: Name of the class to call the methods from.
     namecontains: Only call methods that contain this substring in their name.
         This is not case sensitive. To disable, set to None.
-    datatype: Only call methods that are of this data type. Can include modifiers, such
-        as static, and access modifiers, such as public.
-        This is not case sensitive.
-        Examples: int, static void, public Dictionary<string, SaltedInt> 
-        Defaults to any.
+    datatype: Only call methods that are of this data type. Only supports primitive data types.
+              Nullable types are automatically included along with the basic, non-nullable type.
+              Defaults to any (though it will fail on methods with data types incompatible with your patchtype).
+    modifiers: Only call methods that contain these modifiers (list).
+               Examples: ["public", "static"], "overload"
+               Defaults to None.
     params: Dictionary of parameters to call the method with, in this format: "data type": value
-            If the value is null, the data type should be None (without quotes) or "null"
-            Only supports primitive types. Does not support nullable types, either.
-            Examples: "int": 1, "string": "hello", None: "null", "null": "null"
+            Only supports primitive types (as well as their nullable variants).
+            If the data type is nullable, just put the basic, non-nullable type.
+            To use the value null (for nullable data types), put None (without quotes).
+            Examples: "int": 1, "string": "hello", "char": None
             Only calls methods that follow this signature of params / have default arguments for unprovided params (or
             if convertparams is true and the params can be converted to match the signature).
     times: Number of times to call the methods. Must be greater than 0.
@@ -344,13 +354,16 @@ This script will give you 10000 gems. Enjoy! As they say, "A happy man is a weal
     classname: Name of the class to patch.
     namecontains: Only redirect methods that contain this substring in their name.
         This is not case sensitive. To disable, set to None.
-    datatype: Only redirect methods that are of this data type. Only supports primitive and non-nullable data types. 
+    datatype: Only redirect methods that are of this data type. Only supports primitive data types.
+              Nullable types are automatically included along with the basic, non-nullable type.
               Defaults to any (though it will fail on methods with data types incompatible with your patchtype).
     modifiers: Only redirect methods that contain these modifiers (list).
                Examples: ["public", "static"], "overload"
                Defaults to None.
     methodtocall: Method to redirect these methods to.
     params: Dictionary of parameters to call the method they are redirected to with, in this format: "data type": value
+            Only supports primitive types (as well as their nullable variants).
+            If the data type is nullable, just put the basic, non-nullable type.
             If you want it to use one of the original method's parameters:
                 Set the value to MethodParam (NUMBEROFPARAMETER). For example: "int": MethodParam(1). If the 
                 original method has too little parameters, it will be skipped.
@@ -360,9 +373,16 @@ This script will give you 10000 gems. Enjoy! As they say, "A happy man is a weal
                 If the original method does not have enough parameters of this data type, it will be skipped.
                 For example: MethodParamofType("int")
             Of course, you can also use your own parameters:
-                If the value is null, the data type should be None (without quotes) or "null"
-                Only supports primitive types. Does not support nullable types, either.
-                Examples: "int": 1, "string": "hello", None: "null", "null": "null"
+                To use the value null (for nullable data types), put None (without quotes).
+                Examples: "int": 1, "string": "hello", "char": None
+    usenullabledatatypesinparams: If you specify a parameter using MethodParamofType (which tells the program to use 
+                                  the first method parameter of this data type), nullable parameters in the original 
+                                  method will be ignored. Set this to True (default False) to not ignore nullable 
+                                  parameters.
+                                  WARNING: If the original method's argument for a nullable parameter is null, 
+                                  and because of this flag being true the argument gets passed to the method it 
+                                  redirects to, the game will crash if the receiving method's parameter is not 
+                                  nullable - because null cannot be passed as an argument to a non-nullable parameter.
     
     callandredirectallmethods: Same as redirectallmethods, but calls the original methods as well. Function to redirect 
     all methods in a class to call another method.
@@ -372,13 +392,16 @@ This script will give you 10000 gems. Enjoy! As they say, "A happy man is a weal
     classname: Name of the class to patch.
     namecontains: Only redirect methods that contain this substring in their name.
         This is not case sensitive. To disable, set to None.
-    datatype: Only redirect methods that are of this data type. Only supports primitive and non-nullable data types. 
+    datatype: Only supports primitive types (as well as their nullable variants).
+              If the data type is nullable, just put the basic, non-nullable type.
               Defaults to any (though it will fail on methods with data types incompatible with your patchtype).
     modifiers: Only redirect methods that contain these modifiers (list).
                Examples: ["public", "static"], "overload"
                Defaults to None.
     methodtocall: Method to redirect these methods to.
     params: Dictionary of parameters to call the method they are redirected to with, in this format: "data type": value
+            Only supports primitive types (as well as their nullable variants).
+            If the data type is nullable, just put the basic, non-nullable type.
             If you want it to use one of the original method's parameters:
                 Set the value to MethodParam (NUMBEROFPARAMETER). For example: "int": MethodParam(1). If the 
                 original method has too little parameters, it will be skipped.
@@ -388,9 +411,16 @@ This script will give you 10000 gems. Enjoy! As they say, "A happy man is a weal
                 If the original method does not have enough parameters of this data type, it will be skipped.
                 For example: MethodParamofType("int")
             Of course, you can also use your own parameters:
-                If the value is null, the data type should be None (without quotes) or "null"
-                Only supports primitive types. Does not support nullable types, either.
-                Examples: "int": 1, "string": "hello", None: "null", "null": "null"
+                To use the value null (for nullable data types), put None (without quotes).
+                Examples: "int": 1, "string": "hello", "char": None
+    usenullabledatatypesinparams: If you specify a parameter using MethodParamofType (which tells the program to use 
+                                  the first method parameter of this data type), nullable parameters in the original 
+                                  method will be ignored. Set this to True (default False) to not ignore nullable 
+                                  parameters.
+                                  WARNING: If the original method's argument for a nullable parameter is null, 
+                                  and because of this flag being true the argument gets passed to the method it 
+                                  redirects to, the game will crash if the receiving method's parameter is not 
+                                  nullable - because null cannot be passed as an argument to a non-nullable parameter.
     callafter: Whether to call the original method before or after the redirected one (False is before, True is after).
                This default to False (before).
     
@@ -404,8 +434,8 @@ This script will give you 10000 gems. Enjoy! As they say, "A happy man is a weal
     classname: Name of the class the method is in.
     methodname: Name of the method to call.
     params: List of parameters to call the method with, in this format: datatype value
-            Only supports primitive types. Does not support nullable types, either.
-            Examples: "int": 1, "string": "hello", None: "null", "null": "null"
+            Only supports primitive data types.
+            Nullable types are automatically included along with the basic, non-nullable type.
             If there are no parameters, pass an empty list or None.
             Params much match method's signature (it will also work if convertparams is true
             and the params can be converted to match the signature).
@@ -451,7 +481,6 @@ gg.alert("Success! You now have: {} gems").format(getfield("PlayerCurrency", "ge
     Patchtype:
     
     The type of data a patch is.
-    Unfortunately, primitive / not-nullable data types are not supported.
     If the patch is invalid for a field or method, the program will try to convert the patch value
     to another representation that means the same thing. If it fails to do so, it will throw an error and
     skip the method / field.
