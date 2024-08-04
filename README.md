@@ -1,29 +1,83 @@
 # WIP, DON'T TRY TO USE
 
 # About
-This is a tool I made for a friend. It's a python script to automatically generate gameguardian scripts for il2cpp games. It allows you to patch specific methods or fields, or an entire class. You can specify conditions such as name and data type, to determine what to patch.
 
-# Requirements
-- [Python](https://www.python.org/downloads/) 3.10+
+This is a tool I made for a friend. It's a python script to automatically generate [Gameguardian](https://gameguardian.net/) scripts for [IL2CPP](https://docs.unity3d.com/Manual/IL2CPP.html) games, crammed with smart, powerful, and easy-to-use features.
+
+> This tool is geared specifically toward users without coding knowledge. While this tool might be useful as an API, the ultimate power and customizability is slightly compromised by the goal of keeping it simple and easy to use. On the same note, most of the code and features should work for non-Il2cpp games, but this tool is designed for Il2cpp games and other games were not considered in its development. However, those with advanced knowledge in coding should feel free to explore the code and perhaps write some of their own scripts utilizing or expanding it.
+
+# Help
+
+If you need any help using this tool, feel free to reach out. Contact me by filing an [issue](https://github.com/HorridModz/Il2cppPatch/issues/new) out in this Github repository or reaching out on discord (`@horridmodz`).
 
 # Features
-- All packed into a single python file, making it easy to download, distribute, and use
-- No setup needed - automatically installs requirements
-- Patch fields
-- Patch methods
-- Patch by name
-- Patch all fields and / or methods in an **entire class**, filtering by name, data type, and more
-- Many types of patches, including ints, strings, bools, arm instructions, nop, and more
-- Automatic conversion of patch types - eg: int to float
-- Script customization
-- Automatic script obfuscation
-- Script password generation
-- All-update script generation
-- Helpful error messages and detailed, configurable logging
+
+- [x] All packed into a single python, making it easy to download, distribute, and use
+- [x] No setup needed - automatically installs requirements
+- [x] Easy to use interface with detailed documentation and instructions, so you can use it without any coding knowledge if you put in some effort
+- [ ] Patch fields
+- [ ] Patch methods
+- [ ] Patch by name
+- [ ] Patch all fields and / or methods in an **entire class**, filtering by name, data type, modifiers, and more
+- [ ] Many types of smart and flexible patches, including ints, strings, bools, arm instructions, nop, and more
+- [ ] Script customization
+- [ ] Automatic script obfuscation
+- [ ] Script password generation
+- [ ] All-update script generation
+- [ ] Helpful error messages and detailed, configurable logging
+- [ ] Clean code full of documentation
+
+# Requirements
+
+- [Python](https://www.python.org/downloads/) version 3.11 or higher
 
 # Setup
 
+Just install [Python](https://www.python.org/downloads/) if you don't already have it and a capable [text editor](https://notepad-plus-plus.org/) or [IDE](https://www.jetbrains.com/pycharm/) along with it, preferably one with features such as syntax highlighting and word wrapping. All you need to download from here is the [il2cpppatch.py](il2cpppatch.py) python script (see releases [here](https://github.com/HorridModz/Il2cppPatch/releases/latest)). Then just open the script up in your text editor / IDE and follow along with the instructions in the `main` function right smack at the top of the file - though it's recommended to finish reading this README first.
+
 # Usage
+
+Simply open the script up in your text editor / IDE and follow along with the instructions in the `main` function right at the top of the file. Though the main function gives you instructions, there is a more verbose and readable walkthrough here. You can also view the [Class Reference](#class-reference) and [Examples](#examples) at the end of this file.
+
+### 1. Paths
+
+```py
+"""
+Path to the dumpcs file
+Make sure not to remove the r before the opening quotation mark!
+"""
+dumpcspath = r"C:\Users\zachy\Documents\Work\Projects\Pixel Gun 3D\Pixel Gun 3D 22.6.0\dump.cs" # noqa
+"""
+Path to the .so library file (usually libil2cpp.so)
+Make sure not to remove the r before the opening quotation mark!
+"""
+libpath = r"C:\Users\zachy\Documents\Work\Projects\Pixel Gun 3D\Pixel Gun 3D 22.6.0\libil2cpp.so" # noqa
+"""
+Path to the output script file
+Make sure not to remove the r before the opening quotation mark!
+"""
+outputpath = r"C:\Users\zachy\Downloads\il2cpppatchgeneratedscript.lua" # noqa
+```
+
+Here, paste the needed paths into their respective slots. Make sure to paste inside the paranthesis and not remove the trailing `r` - for example, if your `dumpcspath` is `C:\folder\dump.cs`:
+
+```py
+dumpcspath = r"C:\folder\dump.cs"
+```
+
+Here's a description of each path:
+
+- **dumpcspath**: The path to your game's `dump.cs` file generated by [https://github.com/Perfare/Il2CppDumper](https://github.com/Perfare/Il2CppDumper). If you have not used Il2cppDumper to dump your game, then you must do so to use this tool. Here's a [tutorial on youtube](https://www.youtube.com/watch?v=yAK7rRhmTG4) if you've never used this tool before.
+- **libpath**: The path to your game's `libil2cpp.so` file (make sure it aligns with your game architecture, `32bit` or `64bit` - more on that in [section 3, game info](#3-game-info)). Again, see this [youtube tutorial](https://www.youtube.com/watch?v=yAK7rRhmTG4) if you don't know how to obtain this file.
+- **outputpath**: The path for the generated script file to be created at. Put it somewhere accessible, like in your `Desktop` or `Downloads` folder. Make sure to include the file name at the end of the path, not just the path to the folder. You can change the file name to whatever you want (though you should keep the file extension as `.lua` since it's a gameguardian script) - in the original, it's called `il2cpppatchgeneratedscript.lua`.
+
+### 2. Script Settings
+
+### 3. Game Info
+
+### 4. Patching (The Fun Part!)
+
+Oh boy. As this is the bulk of the tool, there's a lot to cover here. This is going to be very in-depth, much more so than the instructions included in the script itself, but also much easier to understand and more informative. This part will go hand in hand with the [Class Reference](#class-reference) and [Examples](#examples).
 
 # Examples
 
