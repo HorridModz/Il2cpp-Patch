@@ -12,7 +12,7 @@ If you need any help using this tool, feel free to reach out. Contact me by fili
 
 # Features
 
-- [x] All packed into a single python, making it easy to download, distribute, and use
+- [x] All packed into a single file, making it easy to download, distribute, and use
 - [x] No setup needed - automatically installs requirements
 - [x] Easy to use interface with detailed documentation and instructions, so you can use it without any coding knowledge if you put in some effort
 - [ ] Patch fields
