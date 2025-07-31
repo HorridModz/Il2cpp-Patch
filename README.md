@@ -6,6 +6,8 @@ This is a tool I made for a friend. It's a python script to automatically genera
 
 > This tool is geared specifically toward users without coding knowledge. While this tool might be useful as an API, the ultimate power and customizability is slightly compromised by the goal of keeping it simple and easy to use. On the same note, most of the code and features should work for non-Il2cpp games, but this tool is designed for Il2cpp games and other games were not considered in its development. However, those with advanced knowledge in coding should feel free to explore the code and perhaps write some of their own scripts utilizing or expanding it.
 
+**Disclaimer: THIS REPOSITORY IS FOR EDUCATIONAL PURPOSES. I AM NOT LIABLE FOR ANY MISUSE.**
+
 # Help
 
 If you need any help using this tool, feel free to reach out. Contact me by filing an [issue](https://github.com/HorridModz/Il2cppPatch/issues/new) out in this Github repository or reaching out on discord (`@horridmodz`).
